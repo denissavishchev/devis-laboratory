@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ocean · Devis Laboratory</title>
+  <meta name="description" content="Ocean: a blue flame-top 7-string electric guitar.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;800&display=swap" rel="stylesheet">
+  <style>
+    :root { --teal: #1fb6d0; --deep: #0b3d52; --navy: #0a2236; --ice: #d9f6fb; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      min-height: 100vh; display: grid; place-items: center; padding: 28px 16px; overflow-x: hidden;
+      font-family: Montserrat, -apple-system, Helvetica, Arial, sans-serif; color: #fff;
+      background: #0e4a63; position: relative;
+    }
+    /* blurred backdrop */
+    body::before {
+      content: ""; position: fixed; inset: -10%; z-index: 0; filter: blur(60px);
+      background:
+        radial-gradient(40% 50% at 15% 25%, #36d3ea 0%, transparent 70%),
+        radial-gradient(45% 55% at 85% 20%, #0a5d7c 0%, transparent 70%),
+        radial-gradient(50% 50% at 70% 90%, #1aa2bd 0%, transparent 70%),
+        radial-gradient(40% 50% at 10% 90%, #08283b 0%, transparent 70%), #0d5470;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    .glass {
+      position: relative; z-index: 1; width: min(1180px, 100%); min-height: 640px; border-radius: 44px;
+      background: linear-gradient(135deg, rgba(60,200,225,.78), rgba(18,120,150,.78));
+      border: 3px solid rgba(255,255,255,.75); box-shadow: 0 40px 80px rgba(0,30,50,.5), inset 0 0 40px rgba(255,255,255,.12);
+      display: grid; grid-template-columns: 1fr 150px; overflow: hidden; padding: 34px 40px;
+    }
+    .ghost {
+      position: absolute; left: 50%; top: 50%; transform: translate(-50%,-48%); font-weight: 800; letter-spacing: .02em;
+      font-size: clamp(9rem, 26vw, 22rem); color: rgba(255,255,255,.1); line-height: 1; pointer-events: none; user-select: none;
+    }
+    .main { position: relative; display: grid; grid-template-rows: auto 1fr auto; }
+
+    .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
+    .badge {
+      border: 1px solid rgba(255,255,255,.7); border-radius: 6px; padding: 10px 16px; font-size: .58rem; font-weight: 500;
+      letter-spacing: .12em; text-transform: uppercase; background: linear-gradient(135deg, #1cb2d0, #0d6d8a); line-height: 1.5;
+    }
+    .badge b { display: block; font-size: .9rem; letter-spacing: .05em; }
+    .title { text-align: right; }
+    .title .sub { font-size: .75rem; font-weight: 300; letter-spacing: .1em; }
+    .title h1 { font-size: clamp(1.8rem, 3.6vw, 3rem); font-weight: 800; letter-spacing: .01em; line-height: 1; text-transform: uppercase; }
+    .title .line { display: flex; justify-content: flex-end; align-items: center; gap: 14px; margin-top: 8px; font-weight: 800; font-size: 1.4rem; }
+    .title .line i { width: 60px; height: 1px; background: #fff; }
+    .chev { width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; background: radial-gradient(circle at 35% 30%, #5fe4f5, #1aa5c0); box-shadow: 0 0 24px rgba(120,240,255,.6); }
+
+    .stage { position: relative; display: grid; place-items: center; }
+    .guitar { width: min(100%, 880px); height: auto; filter: drop-shadow(0 34px 30px rgba(0,25,45,.55)); transform: rotate(-4deg); transition: transform .5s; }
+    .guitar:hover { transform: rotate(-1deg) scale(1.02); }
+    .arc { position: absolute; inset: 6% 2% 0 2%; width: 96%; height: 94%; pointer-events: none; }
+    .deg { position: absolute; left: 4%; top: 46%; font-size: .7rem; font-weight: 500; letter-spacing: .1em; }
+
+    .foot { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; }
+    .buy {
+      border: 2px solid #5fe4f5; border-radius: 22px; padding: 14px 30px; font-weight: 800; letter-spacing: .12em; font-size: .9rem;
+      color: #aef3fb; background: rgba(10,80,105,.3); box-shadow: 0 0 18px rgba(95,228,245,.45), inset 0 0 12px rgba(95,228,245,.25); transition: .2s;
+    }
+    .buy:hover { background: #5fe4f5; color: #083449; }
+    .opts { display: flex; gap: 34px; align-items: flex-end; }
+    .price { font-size: 2.6rem; font-weight: 800; line-height: 1; }
+    .opt { font-size: .62rem; letter-spacing: .12em; text-transform: uppercase; }
+    .opt b { display: block; font-size: .8rem; letter-spacing: .05em; }
+    .tag { border: 1px solid rgba(255,255,255,.7); border-radius: 6px; padding: 10px 24px; font-weight: 800; letter-spacing: .06em; background: linear-gradient(135deg, #1cb2d0, #0d6d8a); }
+
+    .side { position: relative; display: grid; grid-template-rows: auto 1fr auto; justify-items: end; padding-left: 24px; }
+    .side nav { display: grid; gap: 38px; align-content: center; justify-items: end; font-size: .68rem; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; }
+    .side nav a { opacity: .8; } .side nav a:hover, .side nav a.on { opacity: 1; }
+    .side nav a.on::before { content: "● "; font-size: .5rem; vertical-align: middle; }
+    .swoosh svg { width: 42px; }
+    .bars { width: 22px; display: grid; gap: 3px; } .bars i { height: 2px; background: #fff; }
+
+    @media (max-width: 860px) {
+      .glass { grid-template-columns: 1fr; padding: 24px 20px; border-radius: 30px; }
+      .side { grid-template-rows: none; grid-auto-flow: column; justify-content: space-between; padding: 18px 0 0; order: -1; }
+      .side nav { grid-auto-flow: column; gap: 16px; }
+      .swoosh, .bars { display: none; }
+      .head { flex-direction: column; } .title { text-align: left; } .title .line { justify-content: flex-start; }
+      .chev { display: none; } .deg { display: none; }
+      .opts { gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="glass">
+    <div class="ghost" aria-hidden="true">OCEAN</div>
+
+    <div class="main">
+      <div class="head">
+        <div class="badge"><b>Devis Lab</b>Handmade guitars</div>
+        <div class="title">
+          <div class="sub">pick the perfect one</div>
+          <h1>Flame-top<br>7-string</h1>
+          <div class="line"><i></i><span>01</span></div>
+        </div>
+        <div class="chev"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></div>
+      </div>
+
+      <div class="stage">
+        <svg class="arc" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M3 8 C -2 55 12 85 40 96" fill="none" stroke="#fff" stroke-width=".25" vector-effect="non-scaling-stroke" style="stroke-width:1px"/>
+          <circle cx="3" cy="8" r="1" fill="#fff"/><circle cx="1.2" cy="55" r="1" fill="#fff"/><circle cx="40" cy="96" r="1" fill="#fff"/>
+        </svg>
+        <div class="deg">180°</div>
+        <img class="guitar" src="guitars/cutout/blue-horizontal.png" alt="Ocean blue 7-string electric guitar" width="2400" height="850">
+      </div>
+
+      <div class="foot">
+        <div style="display:flex;gap:18px;align-items:flex-end;flex-wrap:wrap">
+          <a class="buy" href="#">BUY NOW</a>
+          <div class="tag">@devislab</div>
+        </div>
+        <div class="opts">
+          <div class="opt">Size<b>7 strings</b></div>
+          <div class="opt">Color<b>Ocean Blue</b></div>
+          <div class="price">$1,950</div>
+        </div>
+      </div>
+    </div>
+
+    <aside class="side">
+      <div class="swoosh"><svg viewBox="0 0 40 24" fill="#fff"><path d="M38 2C28 8 14 18 7 22 2 24 0 21 3 17 6 13 14 9 20 6c4-2 10-4 18-4z"/></svg></div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="ancient.html">Ancient</a>
+        <a href="blueUI.html" class="on">Ocean</a>
+        <a href="brownUI.html">Ember</a>
+        <a href="redUI.html">Crimson</a>
+      </nav>
+      <div class="bars"><i></i><i></i><i></i></div>
+    </aside>
+  </div>
+</body>
+</html>

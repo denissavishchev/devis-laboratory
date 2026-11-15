@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Crimson · Devis Laboratory</title>
+  <meta name="description" content="Crimson: a red quilted-top 4-string bass.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Pinyon+Script&family=Inter:wght@500;800&display=swap" rel="stylesheet">
+  <style>
+    :root { --cream: #f7efe0; --black: #0c0c0c; --yellow: #f7b900; --pink: #f58b8f; }
+    [data-theme="light"] { --top: var(--cream); --bottom: var(--black); --ink: #0c0c0c; --muted: #6b6b6b; --tile: #2a2a2e; --tile-ink: #fff; --on-bottom: #fff; --btn-bg: #fff; }
+    [data-theme="dark"]  { --top: var(--black); --bottom: var(--cream); --ink: #fff; --muted: #b5b5b5; --tile: #fff; --tile-ink: #0c0c0c; --on-bottom: #0c0c0c; --btn-bg: #0c0c0c; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      min-height: 100vh; display: grid; place-items: center; padding: 28px 16px; background: var(--pink);
+      font-family: Inter, -apple-system, Helvetica, Arial, sans-serif; color: var(--ink);
+    }
+    a { color: inherit; text-decoration: none; }
+    .app {
+      position: relative; width: min(1180px, 100%); min-height: 640px; border-radius: 44px; overflow: hidden;
+      background: var(--top); display: grid; grid-template-rows: auto 1fr auto; box-shadow: 0 40px 70px rgba(120,30,40,.35);
+    }
+    .wave { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 52%; z-index: 0; }
+    .wave path { fill: var(--bottom); }
+    .app > *:not(.wave) { position: relative; z-index: 1; }
+
+    header { display: flex; justify-content: space-between; align-items: center; padding: 26px 40px 0; gap: 18px; }
+    .logo { width: 38px; height: 38px; display: grid; place-items: center; font: 900 1.5rem/1 "Playfair Display", serif; }
+    header nav { display: flex; gap: 22px; font-size: .72rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; flex-wrap: wrap; justify-content: center; }
+    header nav a { color: var(--muted); } header nav a:hover, header nav a.on { color: var(--ink); }
+    .icons { display: flex; gap: 18px; align-items: center; }
+    .icons svg { width: 22px; height: 22px; }
+
+    .stage { position: relative; display: grid; grid-template-columns: 300px 1fr 90px; align-items: center; padding: 0 40px; }
+    .info .kind { font-size: .72rem; font-weight: 500; color: var(--muted); }
+    .info h1 { font: 900 clamp(2.6rem, 5vw, 4.4rem)/.95 "Playfair Display", Georgia, serif; margin: 4px 0 8px; }
+    .price { color: var(--yellow); font-weight: 800; font-size: 1.1rem; }
+    .price span { color: var(--muted); letter-spacing: .1em; margin-left: 8px; font-size: .9rem; }
+    .guitar { width: 100%; height: auto; filter: drop-shadow(0 30px 24px rgba(0,0,0,.45)); transform: rotate(-5deg); transition: transform .5s; }
+    .guitar:hover { transform: rotate(-2deg) scale(1.02); }
+    .sig { position: absolute; left: 60%; bottom: 5%; font: 4.4rem/1 "Pinyon Script", cursive; color: var(--on-bottom); z-index: 3; pointer-events: none; }
+    .swatches { display: grid; gap: 12px; justify-items: end; }
+    .sw { width: 52px; height: 52px; border-radius: 16px; border: 3px solid transparent; }
+    .sw.s1 { background: linear-gradient(135deg, #e63a52, #8a0f26); border-color: var(--yellow); }
+    .sw.s2 { background: linear-gradient(135deg, #3a1a1a, #0d0505); }
+    .sw.s3 { background: linear-gradient(135deg, #e8e2d4, #b9b2a2); }
+
+    footer { display: grid; grid-template-columns: repeat(4, 1fr) 1.5fr; gap: 14px; padding: 0 40px 30px; align-items: stretch; }
+    .tile {
+      border-radius: 22px; background: var(--tile); color: var(--tile-ink); display: grid; place-items: center; gap: 4px;
+      padding: 14px 8px; font-size: .7rem; font-weight: 800; text-align: center; cursor: pointer; transition: transform .2s;
+    }
+    .tile:hover { transform: translateY(-4px); }
+    .tile.on { background: var(--btn-bg); color: var(--ink); outline: 2px solid var(--ink); }
+    .tile svg { width: 34px; height: 34px; }
+    .cart { border-radius: 22px; background: var(--yellow); color: #000; font-weight: 800; letter-spacing: .04em; display: grid; place-items: center; font-size: 1rem; transition: .2s; }
+    .cart:hover { filter: brightness(1.08); transform: translateY(-3px); }
+
+    .switch { position: absolute; top: 28px; right: 140px; z-index: 5; font-size: .7rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+    @media (max-width: 860px) {
+      .stage { grid-template-columns: 1fr; padding: 10px 20px; gap: 6px; }
+      .swatches { display: flex; justify-content: flex-start; } .sw { width: 40px; height: 40px; border-radius: 12px; }
+      .sig { font-size: 2.4rem; left: 8%; bottom: 3%; }
+      header { padding: 20px 20px 0; } header nav { display: none; }
+      footer { grid-template-columns: 1fr 1fr; padding: 0 20px 22px; } .cart { grid-column: 1 / -1; padding: 16px; }
+      .switch { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <svg class="wave" viewBox="0 0 1000 300" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0 120 C70 90 120 60 190 90 C260 120 300 40 380 30 C460 20 480 90 560 80 C650 68 690 20 770 55 C850 90 920 80 1000 50 L1000 300 L0 300Z"/>
+    </svg>
+
+    <header>
+      <a href="index.html" class="logo" aria-label="Devis Laboratory">D</a>
+      <nav>
+        <a href="ancient.html">Ancient</a>
+        <a href="blueUI.html">Ocean</a>
+        <a href="brownUI.html">Ember</a>
+        <a href="redUI.html" class="on">Crimson</a>
+        <a href="redUI2.html">Crimson · Dark</a>
+      </nav>
+      <div class="icons">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.5l6.8-4M8.6 13.5l6.8 4"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9h18l-2 11H5z"/><path d="M8 9l3-6M16 9l-3-6"/></svg>
+      </div>
+    </header>
+
+    <section class="stage">
+      <div class="info">
+        <div class="kind">Bass Guitar</div>
+        <h1>Crimson<br>Quilt</h1>
+        <div class="price">$1,290 <span>★★★★☆</span></div>
+      </div>
+      <img class="guitar" src="guitars/cutout/red-horizontal.png" alt="Crimson red quilted-top bass guitar" width="2400" height="816">
+      <div class="swatches" aria-hidden="true"><div class="sw s1"></div><div class="sw s2"></div><div class="sw s3"></div></div>
+      <div class="sig" aria-hidden="true">Devis</div>
+    </section>
+
+    <footer>
+      <div class="tile on"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M10 28c-4-4-2-10 4-10 4 0 6-6 12-6s8 6 6 12c-1 4 6 6 4 12-2 6-10 6-14 4-6 0-8-4-12-12z"/></svg>Body style</div>
+      <div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="6" y="14" width="36" height="20" rx="4"/><circle cx="14" cy="24" r="2"/><circle cx="24" cy="24" r="2"/><circle cx="34" cy="24" r="2"/></svg>Pickups</div>
+      <div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M8 40L40 8M12 8l28 32"/></svg>Specs</div>
+      <div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="24" cy="24" r="14"/><circle cx="24" cy="24" r="4"/></svg>Colors</div>
+      <a class="cart" href="#">ADD TO CART</a>
+    </footer>
+  </div>
+</body>
+</html>
